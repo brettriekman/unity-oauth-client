@@ -2,7 +2,7 @@ using Newleaf.Http.Oauth;
 using UnityEngine;
 using ILogger = Newleaf.Http.Oauth.ILogger;
 
-public class test : MonoBehaviour
+public class UnityPkceLogin : MonoBehaviour
 {
     // Start is called before the first frame update
     public class Logger : ILogger
@@ -15,9 +15,9 @@ public class test : MonoBehaviour
     
     void Start()
     {
-        var test = new OauthLoginServer(new Logger());
-        test.HandleAccessToken += SetAccessToken;
-        test.pkceLogin();
+        var server = new OauthLoginServer();
+        server.HandleAccessToken += SetAccessToken;
+        server.pkceLogin();
     }
 
     public void SetAccessToken (object sender, string _accessToken)
@@ -25,9 +25,4 @@ public class test : MonoBehaviour
         Debug.Log($"access token: {_accessToken}");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

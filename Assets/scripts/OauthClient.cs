@@ -22,11 +22,14 @@ namespace Newleaf.Http.Oauth
         public string clientID = "63d32a9d-8960-4d2e-9826-6b0ee2b477c9";
         public string authorizationEndpoint = "https://newleafms.b2clogin.com/newleafms.onmicrosoft.com/B2C_1_signupandin/oauth2/v2.0/authorize";
         public string tokenEndpoint = "https://newleafms.b2clogin.com/newleafms.onmicrosoft.com/B2C_1_signupandin/oauth2/v2.0/token";
-        private ILogger Logger;
+        private readonly ILogger logger;
 
         public OauthLoginServer (ILogger _logger)
         {
-            Logger = _logger;
+            logger = _logger;
+        }
+        public OauthLoginServer ()
+        {
         }
 
         protected virtual void OnHandleAccessToken (string _e)
@@ -128,12 +131,12 @@ namespace Newleaf.Http.Oauth
                     var response = ex.Response as HttpWebResponse;
                     if (response != null)
                     {
-                        Logger.Log("HTTP: " + response.StatusCode);
+                        logger?.Log("HTTP: " + response.StatusCode);
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                         {
                             // reads response body
                             string responseText = await reader.ReadToEndAsync();
-                            Logger.Log(responseText);
+                            logger?.Log(responseText);
                         }
                     }
                 }
