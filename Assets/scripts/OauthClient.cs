@@ -6,9 +6,6 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
-using UnityEngine;
-using Debug = UnityEngine.Debug;
-
 
 namespace Newleaf.Http.Oauth
 {
