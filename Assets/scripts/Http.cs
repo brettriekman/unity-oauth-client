@@ -1,29 +1,35 @@
 using System;
 using System.Net;
-using System.Threading;
 
-namespace Newleaf.Oauth
+namespace Newleaf.Http
 {
-    public class Http
+    public class HttpServer
     {
-        public readonly HttpListener httpListener = new HttpListener();
+        public readonly HttpListener listener = new ();
         public string Url;
+        public event EventHandler<HttpListenerResponse> ResponseReceived;
 
-        public Http (int _port = 60429, bool _secure = false)
+        protected virtual void OnResponseReceived (HttpListenerResponse _e)
+        {
+            ResponseReceived?.Invoke(this, _e);
+        }
+
+        public HttpServer (string _url= "localhost", int _port = 60429, bool _secure = false)
         {
             var _http = _secure ? "https" : "http";
-            Url = $"{_http}://localhost:{_port}/";
-            httpListener.Prefixes.Add(Url);
+            Url = $"{_http}://{_url}:{_port}/";
+            listener.Prefixes.Add(Url);
         }
 
         public void Start ()
         {
-            httpListener.Start();
-            Console.WriteLine("Listening...");
-        } 
+            listener.Start();
+        }
+
         public void Stop ()
         {
-            httpListener.Stop();
+            listener.Stop();
+            listener.Close();
         } 
     }
 }
